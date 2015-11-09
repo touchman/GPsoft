@@ -26,20 +26,9 @@ public class StartServlet extends Dispatcher {
                 e.printStackTrace();
             }
         String action = req.getParameter("enter");
-        String decToBinIn = req.getParameter("decToBinIn");
-        String decToHexIn = req.getParameter("decToHexIn");
-        String binToHexIn = req.getParameter("binToHexIn");
-        String binToDecIn = req.getParameter("binToDecIn");
-        String hexToBinIn = req.getParameter("hexToBinIn");
-        String hexToDecIn = req.getParameter("hexToDecIn");
-        String decToBinOut = req.getParameter("decToBinOut");
-        String decToHexOut = req.getParameter("decToHexOut");
-        String binToHexOut = req.getParameter("binToHexOut");
-        String binToDecOut = req.getParameter("binToDecOut");
-        String hexToBinOut = req.getParameter("hexToBinOut");
-        String hexToDecOut = req.getParameter("hexToDecOut");
 
         if ("eval".equals(action)) {
+            if(expression.contains("+")) expression = expression.replaceAll("\\+", "%2B");
             super.forward("/index.jsp?expression=" + expression + "&result=" + result, req, resp);
         } else if ("load".equals(action)) {
             FileOut secondFile = new FileOut(new File("e:/d.txt"));
@@ -50,61 +39,25 @@ public class StartServlet extends Dispatcher {
             } catch (ScriptException e) {
                 e.printStackTrace();
             }
+            if(sexpression.contains("+")) sexpression = sexpression.replaceAll("\\+", "%2B");
             super.forward("/index.jsp?expression=" + sexpression + "&result=" + result, req, resp);
         } else if ("save".equals(action)) {
             fileOut.setExpression(result);
             fileOut.outputFile(new File("e:/data.txt"));
+            if(expression.contains("+")) expression = expression.replaceAll("\\+", "%2B");
             super.forward("/index.jsp?expression=" + expression + "&result=" + result, req, resp);
         } else if ("insert".equals(action)) {
             fileOut.setExpression(expression);
             fileOut.outputDB();
+            if(expression.contains("+")) expression = expression.replaceAll("\\+", "%2B");
             super.forward("/index.jsp?expression=" + expression + "&result=" + result, req, resp);
-        } else if ("decBin".equals(decToBinIn)) {
-            expression = test.convertDecimalBinary(expression);
-            super.forward("/index.jsp?expression=" + expression, req, resp);
-        } else if ("decHex".equals(decToHexIn)) {
-            expression = test.convertDecimalHex(expression);
-            super.forward("/index.jsp?expression=" + expression, req, resp);
-        } else if ("binDec".equals(binToDecIn)) {
-            expression = test.convertBinaryDecimal(expression);
-            super.forward("/index.jsp?expression=" + expression, req, resp);
-        } else if ("binHex".equals(binToHexIn)) {
-            expression = test.convertBinaryHex(expression);
-            super.forward("/index.jsp?expression=" + expression, req, resp);
-        } else if ("hexDec".equals(hexToDecIn)) {
-            expression = test.convertHexDecimal(expression);
-            super.forward("/index.jsp?expression=" + expression, req, resp);
-        } else if ("hexBin".equals(hexToBinIn)) {
-            expression = test.convertHexBinary(expression);
-            super.forward("/index.jsp?expression=" + expression, req, resp);
-        } else if ("decBin".equals(decToBinOut)) {
-            result = test.convertDecimalBinary(req.getParameter("result"));
-            super.forward("/index.jsp?&result=" + result, req, resp);
-        } else if ("decHex".equals(decToHexOut)) {
-            result = test.convertDecimalHex(req.getParameter("result"));
-            super.forward("/index.jsp?&result=" + result, req, resp);
-        } else if ("binDec".equals(binToDecOut)) {
-            result = test.convertBinaryDecimal(req.getParameter("result"));
-            super.forward("/index.jsp?&result=" + result, req, resp);
-        } else if ("binHex".equals(binToHexOut)) {
-            result = test.convertBinaryHex(req.getParameter("result"));
-            super.forward("/index.jsp?&result=" + result, req, resp);
-        } else if ("hexDec".equals(hexToDecOut)) {
-            result = test.convertHexDecimal(req.getParameter("result"));
-            super.forward("/index.jsp?&result=" + result, req, resp);
-        } else if ("hexBin".equals(hexToBinOut)) {
-            result = test.convertHexBinary(req.getParameter("result"));
-            super.forward("/index.jsp?&result=" + result, req, resp);
         }
     }
 
     public static void main(String[] args) {
         String expression = "2+4";
-        Test test = new Test();
-        expression = test.convertDecimalBinary(expression);
+
+        expression = expression.replaceAll("\\+", "%2B");
         System.out.println(expression);
-
-        StartServlet s = new StartServlet();
-
     }
 }
